@@ -8,7 +8,7 @@ is an S3-compatible client, check out [image-steam-s3](https://github.com/asilva
 ## Options
 
 ```ecmascript 6
-import isteamAWSS3 from 'image-steam-aws-s3';
+import isteamAWSS3 from 'image-steam-awss3';
 
 const s3 = new isteamAWSS3({
   region: 'us-west-2',
@@ -38,7 +38,7 @@ const options = {
       }
     },
     cache: {
-      driverPath: 'image-steam-aws-s3',
+      driverPath: 'image-steam-awss3',
       options: {
         region: 'us-west-2',
         bucket: 'isteam-cache'
