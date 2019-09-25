@@ -1,0 +1,27 @@
+{
+  "name": "image-steam-aws-s3",
+  "version": "1.0.0",
+  "description": "AWS S3 storage client for Image Steam: https://github.com/asilvas/node-image-steam",
+  "main": "index.js",
+  "scripts": {
+  },
+  "files": [
+    "index.js"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/asilvas/image-steam-aws-s3.git"
+  },
+  "author": "Aaron Silvas",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/asilvas/image-steam-aws-s3/issues"
+  },
+  "homepage": "https://github.com/asilvas/image-steam-aws-s3#readme",
+  "peerDependencies": {
+    "image-steam": ">=0.41.0"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.534.0"
+  }
+}
