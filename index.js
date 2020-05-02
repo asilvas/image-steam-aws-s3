@@ -20,7 +20,14 @@ module.exports = class StorageAWSS3 extends StorageBase {
       ? `isteam/${originalPath}/${stepsHash}`
       : originalPath
     ;
-    const Key = imagePath.split('/').map(p => decodeURIComponent(p)).join('/');
+    const Key = imagePath.split('/').map(p => {
+      try {
+        // this decode is unnecessary in most cases but is for backward compatibility, but must fail safe
+        return decodeURIComponent(p);
+      } catch (ex) {
+        return p;
+      }
+    }).join('/');
   
     const { Bucket } = this;
     const params = { Bucket, Key };
