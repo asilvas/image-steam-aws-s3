@@ -8,10 +8,7 @@ module.exports = class StorageAWSS3 extends StorageBase {
     super(opts);
 
     const { region, bucket, lifecycle } = opts;
-    if (region) {
-      AWS.config.update({ region });
-    }
-    this.s3 = new AWS.S3({ });
+    this.s3 = new AWS.S3({ region });
     this.Bucket = bucket;
   }
 
