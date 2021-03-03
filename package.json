@@ -1,10 +1,9 @@
 {
   "name": "image-steam-awss3",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "AWS S3 storage client for Image Steam: https://github.com/asilvas/node-image-steam",
   "main": "index.js",
-  "scripts": {
-  },
+  "scripts": {},
   "files": [
     "index.js"
   ],
