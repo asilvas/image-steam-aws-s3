@@ -119,7 +119,10 @@ module.exports = class StorageAWSS3 extends StorageBase {
 
       cb(null, {
         resumeKey: data.IsTruncated ? data.NextContinuationToken : undefined,
-        files: data.Contents
+        files: data.Contents.map(f => {
+          f.Key = decodeURIComponent(f.Key.replace(/\+/g, ' ')); // account for encoding... https://docs.aws.amazon.com/lambda/latest/dg/with-s3-example-deployment-pkg.html#with-s3-example-deployment-pkg-nodejs
+          return f;
+        })
       });
     });
   }
