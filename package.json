@@ -21,6 +21,6 @@
     "image-steam": ">=0.41.0"
   },
   "dependencies": {
-    "aws-sdk": "^2.534.0"
+    "aws-sdk": "^2.1108.0"
   }
 }

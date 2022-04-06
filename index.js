@@ -31,7 +31,10 @@ module.exports = class StorageAWSS3 extends StorageBase {
     if (etag) params.IfNoneMatch = etag;
 
     this.s3.getObject(params, (err, data) => {
-      if (err) return void cb(err);
+      if (err) {
+        if (err.code === 'NoSuchKey') err.statusCode = 404;
+        return void cb(err);
+      }
 
       const info = Object.assign(
         { path: encodeURIComponent(originalPath), stepsHash },
