@@ -7,15 +7,17 @@ module.exports = class StorageAWSS3 extends StorageBase {
   constructor(opts = {}) {
     super(opts);
 
-    const { region, bucket, lifecycle } = opts;
+    const { region, bucket, pathPrefix } = opts;
     this.s3 = new AWS.S3({ region });
     this.Bucket = bucket;
+    this.pathPrefix = pathPrefix || '';
   }
 
   fetch({ etag } = {}, originalPath, stepsHash, cb) {
+    const { Bucket, pathPrefix } = this;
     const imagePath = stepsHash
-      ? `isteam/${originalPath}/${stepsHash}`
-      : originalPath
+      ? `isteam/${pathPrefix+originalPath}/${stepsHash}`
+      : pathPrefix+originalPath
     ;
     const Key = imagePath.split('/').map(p => {
       try {
@@ -26,7 +28,6 @@ module.exports = class StorageAWSS3 extends StorageBase {
       }
     }).join('/');
   
-    const { Bucket } = this;
     const params = { Bucket, Key };
     if (etag) params.IfNoneMatch = etag;
 
@@ -48,8 +49,8 @@ module.exports = class StorageAWSS3 extends StorageBase {
   store(opts, originalPath, stepsHash, image, cb) {
     image.info.stepsHash = stepsHash;
 
-    const { Bucket } = this;
-    const Key = `isteam/${originalPath}/${stepsHash}`;
+    const { Bucket, pathPrefix } = this;
+    const Key = `isteam/${pathPrefix+originalPath}/${stepsHash}`;
     const Body = image.buffer;
     const Metadata = getMetaFromImage(image.info);
     const ContentType = image.contentType || 'application/octet-stream'; // default to binary if unknown
@@ -64,8 +65,8 @@ module.exports = class StorageAWSS3 extends StorageBase {
   touch(opts, originalPath, stepsHash, image, cb) {
     image.info.stepsHash = stepsHash;
 
-    const { Bucket } = this;
-    const Key = `isteam/${originalPath}/${stepsHash}`;
+    const { Bucket, pathPrefix } = this;
+    const Key = `isteam/${pathPrefix+originalPath}/${stepsHash}`;
     const CopySource = `/${Bucket}/${Key}`;
     const MetadataDirective = 'REPLACE';
     const Metadata = getMetaFromImage(image.info);
@@ -76,9 +77,8 @@ module.exports = class StorageAWSS3 extends StorageBase {
   }
 
   deleteCache(opts, originalPath, cb) {
-    const imagePath = `isteam/${originalPath}`;
-
-    const { Bucket } = this;
+    const { Bucket, pathPrefix } = this;
+    const imagePath = `isteam/${pathPrefix+originalPath}`;
     
     const _listAndDelete = (dir, resumeKey, cb) => {
       this.list(dir, { resumeKey }, (err, { files, resumeKey } = {}) => {
@@ -105,8 +105,8 @@ module.exports = class StorageAWSS3 extends StorageBase {
   }
 
   list(originalPath, { resumeKey, maxCount = 1000 } = {}, cb) {
-    const Prefix = `${originalPath}/`;
-    const { Bucket } = this;
+    const { Bucket, pathPrefix } = this;
+    const Prefix = `${pathPrefix+originalPath}/`;
     const params = {
       Bucket,
       Delimiter: '/',

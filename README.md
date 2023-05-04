@@ -20,6 +20,7 @@ const s3 = new isteamAWSS3({
 | --- | --- | --- | --- |
 | region | `string` | *required* | AWS Region of S3 bucket |
 | bucket | `string` | *required* | Unique name of S3 bucket |
+| pathPrefix | `string` | `''` | Prefix of all paths |
 
 
 ## Usage
